@@ -19,7 +19,7 @@ export default function Home() {
     type: 'offer'
   });
   
-  // Location Configuration
+  // Location Configuration - Updated with 5 locations
   const locationOptions = {
     patna: {
       name: 'Patna',
@@ -35,6 +35,16 @@ export default function Home() {
       name: 'Noida',
       address: 'G 94 (Basement), G Block, Sector 63, Noida, Chotpur, Uttar Pradesh 201301',
       gstin: '09AAJCV6337M1ZL'
+    },
+    falka: {
+      name: 'Falka, Katihar',
+      address: 'Falka, Katihar District, Bihar - 855117',
+      gstin: '10AAJCV6337M1Z2'
+    },
+    katihar: {
+      name: 'Katihar',
+      address: 'Katihar, Bihar - 854105',
+      gstin: '10AAJCV6337M1Z2'
     }
   };
 
@@ -44,7 +54,7 @@ export default function Home() {
     jobTitle: '',
     department: '',
     joiningDate: '2024-04-01',
-    workLocation: 'patna', // Changed to location key
+    workLocation: 'patna',
     reportingManager: '',
     ctc: '',
     probationPeriod: '3 months',
@@ -54,7 +64,7 @@ export default function Home() {
     companyName: 'COACHINGYAARI PRIVATE LIMITED',
     companyPhone: '9973725719',
     companyEmail: 'support@coachingyaari.com',
-    hrName: 'Rani Shreya',
+    hrName: 'Apurwa Kumari',
     hrDesignation: 'HR Manager',
     offerDate: new Date().toISOString().split('T')[0]
   });
@@ -122,7 +132,7 @@ export default function Home() {
       joiningDate: offerFormData.joiningDate,
       ctc: offerFormData.ctc,
       reportingManager: offerFormData.reportingManager,
-      workLocation: offerFormData.workLocation, // Send the location key
+      workLocation: offerFormData.workLocation,
       department: offerFormData.department,
       probationPeriod: offerFormData.probationPeriod,
       noticePeriod: offerFormData.noticePeriod,
@@ -168,7 +178,7 @@ export default function Home() {
       companyName: 'COACHINGYAARI PRIVATE LIMITED',
       companyPhone: '9973725719',
       companyEmail: 'support@coachingyaari.com',
-      hrName: 'Rani Shreya',
+      hrName: 'Apurwa Kumari',
       hrDesignation: 'HR Manager',
       offerDate: new Date().toISOString().split('T')[0]
     });
@@ -289,8 +299,8 @@ export default function Home() {
                   <input type="date" name="joiningDate" value={offerFormData.joiningDate} onChange={handleOfferChange} className="w-full px-4 py-2.5 border rounded-lg" />
                 </div>
                 
-                {/* Work Location Dropdown - Updated with 3 locations */}
-                <div>
+                {/* Work Location Dropdown - Updated with 5 locations */}
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Work Location *</label>
                   <select 
                     name="workLocation" 
@@ -301,6 +311,8 @@ export default function Home() {
                     <option value="patna">Patna, Bihar</option>
                     <option value="purnea">Purnea, Bihar</option>
                     <option value="noida">Noida, Uttar Pradesh</option>
+                    <option value="falka">Falka, Katihar</option>
+                    <option value="katihar">Katihar, Bihar</option>
                   </select>
                   {currentLocation && (
                     <p className="text-xs text-gray-500 mt-1">
@@ -336,7 +348,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Company Details Section - Now shows dynamic location info */}
+            {/* Company Details Section */}
             <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
               <h3 className="text-lg font-semibold mb-4 flex items-center">
                 <Building className="h-5 w-5 mr-2 text-purple-600" />
@@ -390,11 +402,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Digital Signature Section */}
+            {/* Digital Signature Section - Updated with location */}
             <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
               <h3 className="text-lg font-semibold mb-4 flex items-center">
                 <Fingerprint className="h-5 w-5 mr-2 text-indigo-600" />
-                Digital Signature (HR)
+                Digital Signature (HR) - {currentLocation.name}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -414,11 +426,19 @@ export default function Home() {
                       <p className="text-xs text-gray-500">PNG, JPG up to 2MB</p>
                     </div>
                   </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Signature will appear with location: <strong>{currentLocation.name}</strong>
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Signature Preview</label>
-                  <div className="border rounded-lg p-4 h-32 flex items-center justify-center bg-gray-50">
+                  <div className="border rounded-lg p-4 h-32 flex flex-col items-center justify-center bg-gray-50">
                     <p className="text-gray-400 text-sm">No signature uploaded yet</p>
+                    <div className="mt-2 text-xs text-gray-500">
+                      <span className="block">📍 {currentLocation.name}</span>
+                      <span className="block text-indigo-600 font-semibold">{offerFormData.hrName || 'Apurwa Kumari'}</span>
+                      <span className="block text-xs">{offerFormData.hrDesignation || 'HR Manager'}</span>
+                    </div>
                   </div>
                   <p className="text-xs text-gray-500 mt-2">Digital signature will appear on the offer letter</p>
                 </div>
@@ -460,7 +480,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Features Section */}
+          {/* Features Section - Updated with 5 locations */}
           <div className="w-full max-w-4xl mt-16">
             <div className="text-center mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Features</h2>
@@ -475,7 +495,7 @@ export default function Home() {
               <div className="bg-white rounded-xl p-6 text-center border border-gray-200">
                 <div className="inline-flex p-3 bg-green-100 rounded-xl mb-4"><Building className="h-6 w-6 text-green-600" /></div>
                 <h3 className="font-semibold mb-2">Multi-Location Support</h3>
-                <p className="text-sm text-gray-500">Patna, Purnea & Noida with dynamic GST</p>
+                <p className="text-sm text-gray-500">Patna, Purnea, Noida, Falka & Katihar with dynamic GST</p>
               </div>
               <div className="bg-white rounded-xl p-6 text-center border border-gray-200">
                 <div className="inline-flex p-3 bg-purple-100 rounded-xl mb-4"><Download className="h-6 w-6 text-purple-600" /></div>

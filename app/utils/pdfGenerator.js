@@ -8,7 +8,7 @@ export const generatePDF = async (formData) => {
   const margin = 15;
   const maxWidth = pageWidth - margin * 2;
 
-  // Location & GST Configuration
+  // Location & GST Configuration - Updated with 5 locations
   const locationConfig = {
     patna: {
       name: 'Patna',
@@ -20,13 +20,25 @@ export const generatePDF = async (formData) => {
       name: 'Purnea',
       gstin: '10AAMCK7097E1ZG',
       address:
-        'First Floor, Shakuntala Sagar, Ct Station Rd, PWD Colony, Purnia, Bihar 854301 ',
+        'First Floor, Shakuntala Sagar, Ct Station Rd, PWD Colony, Purnia, Bihar 854301',
     },
     noida: {
       name: 'Noida',
       gstin: '10AAMCK7097E1ZG',
       address:
         'G 94 (Basement), G Block, Sector 63, Noida, Chotpur, Uttar Pradesh 201301',
+    },
+    falka: {
+      name: 'Falka, Katihar',
+      gstin: '10AAMCK7097E1ZG',
+      address:
+        'Falka, Katihar District, Bihar - 855117',
+    },
+    katihar: {
+      name: 'Katihar',
+      gstin: '10AAMCK7097E1ZG',
+      address:
+        'Katihar, Bihar - 854105',
     },
   };
 
