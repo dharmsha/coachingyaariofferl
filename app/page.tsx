@@ -57,13 +57,13 @@ export default function Home() {
     workLocation: 'patna',
     reportingManager: '',
     ctc: '',
-    probationPeriod: '3 months',
-    noticePeriod: '',
-    workingHours: '10:00 AM - 7:00 PM',
-    workingDays: 'Tuesday to Sunday',
+    probationPeriod: '3 Months',        // ✅ Manual input
+    noticePeriod: '1 Month',             // ✅ Manual input
+    workingHours: '10:00 AM - 07:00 PM', // ✅ Manual input
+    workingDays: 'Tuesday to Sunday',    // ✅ Manual input
     companyName: 'COACHINGYAARI PRIVATE LIMITED',
     companyPhone: '9973725719',
-    companyEmail: 'support@coachingyaari.com',
+    companyEmail: 'coachingyaari@gmail.com',
     hrName: 'Apurwa Kumari',
     hrDesignation: 'HR Manager',
     offerDate: new Date().toISOString().split('T')[0]
@@ -134,8 +134,10 @@ export default function Home() {
       reportingManager: offerFormData.reportingManager,
       workLocation: offerFormData.workLocation,
       department: offerFormData.department,
-      probationPeriod: offerFormData.probationPeriod,
-      noticePeriod: offerFormData.noticePeriod,
+      probationPeriod: offerFormData.probationPeriod,  // ✅ Manual se
+      noticePeriod: offerFormData.noticePeriod,        // ✅ Manual se
+      workingHours: offerFormData.workingHours,        // ✅ Manual se
+      workingDays: offerFormData.workingDays,          // ✅ Manual se
       companyName: offerFormData.companyName,
       companyPhone: offerFormData.companyPhone,
       companyEmail: offerFormData.companyEmail,
@@ -171,9 +173,9 @@ export default function Home() {
       workLocation: 'patna',
       reportingManager: '',
       ctc: '',
-      probationPeriod: '3 months',
-      noticePeriod: '15 days',
-      workingHours: '10:00 AM - 7:00 PM',
+      probationPeriod: '3 Months',
+      noticePeriod: '1 Month',
+      workingHours: '10:00 AM - 07:00 PM',
       workingDays: 'Tuesday to Sunday',
       companyName: 'COACHINGYAARI PRIVATE LIMITED',
       companyPhone: '9973725719',
@@ -329,21 +331,58 @@ export default function Home() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Annual CTC (₹)</label>
                   <input type="text" name="ctc" value={offerFormData.ctc} onChange={handleOfferChange} placeholder="e.g., 12,00,000" className="w-full px-4 py-2.5 border rounded-lg" />
                 </div>
+                
+                {/* ✅ MANUAL INPUT FIELDS - Working Hours, Working Days, Notice Period, Probation */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Probation Period</label>
-                  <input type="text" name="probationPeriod" value={offerFormData.probationPeriod} onChange={handleOfferChange} placeholder="e.g., 3 months" className="w-full px-4 py-2.5 border rounded-lg" />
+                  <input 
+                    type="text" 
+                    name="probationPeriod" 
+                    value={offerFormData.probationPeriod} 
+                    onChange={handleOfferChange} 
+                    placeholder="e.g., 3 Months"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Enter probation period (e.g., 3 Months, 6 Months)</p>
                 </div>
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Notice Period</label>
-                  <input type="text" name="noticePeriod" value={offerFormData.noticePeriod} onChange={handleOfferChange} placeholder="e.g., 15 days" className="w-full px-4 py-2.5 border rounded-lg" />
+                  <input 
+                    type="text" 
+                    name="noticePeriod" 
+                    value={offerFormData.noticePeriod} 
+                    onChange={handleOfferChange} 
+                    placeholder="e.g., 1 Month"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Enter notice period (e.g., 15 Days, 1 Month, 2 Months)</p>
                 </div>
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Working Hours</label>
-                  <input type="text" name="workingHours" value={offerFormData.workingHours} onChange={handleOfferChange} placeholder="e.g., 10:00 AM - 7:00 PM" className="w-full px-4 py-2.5 border rounded-lg" />
+                  <input 
+                    type="text" 
+                    name="workingHours" 
+                    value={offerFormData.workingHours} 
+                    onChange={handleOfferChange} 
+                    placeholder="e.g., 10:00 AM - 07:00 PM"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Enter working hours (e.g., 09:00 AM - 06:00 PM)</p>
                 </div>
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Working Days</label>
-                  <input type="text" name="workingDays" value={offerFormData.workingDays} onChange={handleOfferChange} placeholder="e.g., Monday to Friday" className="w-full px-4 py-2.5 border rounded-lg" />
+                  <input 
+                    type="text" 
+                    name="workingDays" 
+                    value={offerFormData.workingDays} 
+                    onChange={handleOfferChange} 
+                    placeholder="e.g., Monday to Friday"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Enter working days (e.g., Monday to Friday, Tuesday to Sunday)</p>
                 </div>
               </div>
             </div>
@@ -445,7 +484,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Summary Card */}
+            {/* Summary Card - Updated with all fields */}
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-5 border border-blue-100">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
@@ -463,6 +502,22 @@ export default function Home() {
                 <div>
                   <p className="text-xs text-gray-600">Location</p>
                   <p className="font-semibold text-purple-600">{currentLocation.name}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600">Working Hours</p>
+                  <p className="font-semibold text-indigo-600 text-sm">{offerFormData.workingHours}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600">Working Days</p>
+                  <p className="font-semibold text-indigo-600 text-sm">{offerFormData.workingDays}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600">Notice Period</p>
+                  <p className="font-semibold text-orange-600 text-sm">{offerFormData.noticePeriod}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600">Probation</p>
+                  <p className="font-semibold text-orange-600 text-sm">{offerFormData.probationPeriod}</p>
                 </div>
               </div>
             </div>
