@@ -38,7 +38,7 @@ export default function Home() {
     },
     falka: {
       name: 'Falka, Katihar',
-      address: 'Falka, Katihar District, Bihar - 855117',
+      address: 'Falka, Katihar District, Bihar - 854105',
       gstin: '10AAJCV6337M1Z2'
     },
     katihar: {

@@ -32,7 +32,7 @@ export const generatePDF = async (formData) => {
       name: 'Falka, Katihar',
       gstin: '10AAMCK7097E1ZG',
       address:
-        'Falka, Katihar District, Bihar - 855117',
+        'Falka, Katihar District, Bihar - 854105',
     },
     katihar: {
       name: 'Katihar',
