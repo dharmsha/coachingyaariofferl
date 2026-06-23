@@ -18,35 +18,6 @@ export default function Home() {
     message: '',
     type: 'offer'
   });
-  
-  // Location Configuration - Updated with 5 locations
-  const locationOptions = {
-    patna: {
-      name: 'Patna',
-      address: '1st Floor, Siyaram Mansion, Opp. Telephone Exchange, Near P&M Mall, Khurji, Patna, Bihar – 800010',
-      gstin: '10AAJCV6337M1Z2'
-    },
-    purnea: {
-      name: 'Purnea',
-      address: 'First Floor, Shakuntala Sagar, Ct Station Rd, PWD Colony, Purnia, Bihar 854301',
-      gstin: '10AAJCV6337M1Z2'
-    },
-    noida: {
-      name: 'Noida',
-      address: 'G 94 (Basement), G Block, Sector 63, Noida, Chotpur, Uttar Pradesh 201301',
-      gstin: '09AAJCV6337M1ZL'
-    },
-    falka: {
-      name: 'Falka, Katihar',
-      address: 'Falka, Katihar District, Bihar - 854105',
-      gstin: '10AAJCV6337M1Z2'
-    },
-    katihar: {
-      name: 'Katihar',
-      address: 'Katihar, Bihar - 854105',
-      gstin: '10AAJCV6337M1Z2'
-    }
-  };
 
   // ==================== OFFER LETTER FORM ====================
   const [offerFormData, setOfferFormData] = useState({
@@ -54,13 +25,16 @@ export default function Home() {
     jobTitle: '',
     department: '',
     joiningDate: '2024-04-01',
-    workLocation: 'patna',
+    workLocation: 'Patna, Bihar',           // ✅ Manual input
+    workAddress: '1st Floor, Siyaram Mansion, Opp. Telephone Exchange, Near P&M Mall, Khurji, Patna, Bihar – 800010', // ✅ Manual input
+    pincode: '800010',                       // ✅ Manual input (NEW)
+    gstin: '10AAJCV6337M1Z2',                // ✅ Manual input
     reportingManager: '',
     ctc: '',
-    probationPeriod: '3 Months',        // ✅ Manual input
-    noticePeriod: '1 Month',             // ✅ Manual input
-    workingHours: '10:00 AM - 07:00 PM', // ✅ Manual input
-    workingDays: 'Tuesday to Sunday',    // ✅ Manual input
+    probationPeriod: '3 Months',
+    noticePeriod: '1 Month',
+    workingHours: '10:00 AM - 07:00 PM',
+    workingDays: 'Tuesday to Sunday',
     companyName: 'COACHINGYAARI PRIVATE LIMITED',
     companyPhone: '9973725719',
     companyEmail: 'coachingyaari@gmail.com',
@@ -82,12 +56,6 @@ export default function Home() {
   // ==================== OFFER HANDLERS ====================
   const handleOfferChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setOfferFormData({ ...offerFormData, [e.target.name]: e.target.value });
-  };
-
-  // Get current location details
-  const getCurrentLocationDetails = () => {
-    const location = locationOptions[offerFormData.workLocation as keyof typeof locationOptions];
-    return location || locationOptions.patna;
   };
 
   // ==================== LOGO HANDLERS ====================
@@ -124,8 +92,6 @@ export default function Home() {
 
   // ==================== PDF GENERATION ====================
   const handleGenerateOfferPDF = async () => {
-    const currentLocation = getCurrentLocationDetails();
-    
     const mappedFormData = {
       name: offerFormData.candidateName,
       designation: offerFormData.jobTitle,
@@ -133,11 +99,14 @@ export default function Home() {
       ctc: offerFormData.ctc,
       reportingManager: offerFormData.reportingManager,
       workLocation: offerFormData.workLocation,
+      workAddress: offerFormData.workAddress,
+      pincode: offerFormData.pincode,
+      gstin: offerFormData.gstin,
       department: offerFormData.department,
-      probationPeriod: offerFormData.probationPeriod,  // ✅ Manual se
-      noticePeriod: offerFormData.noticePeriod,        // ✅ Manual se
-      workingHours: offerFormData.workingHours,        // ✅ Manual se
-      workingDays: offerFormData.workingDays,          // ✅ Manual se
+      probationPeriod: offerFormData.probationPeriod,
+      noticePeriod: offerFormData.noticePeriod,
+      workingHours: offerFormData.workingHours,
+      workingDays: offerFormData.workingDays,
       companyName: offerFormData.companyName,
       companyPhone: offerFormData.companyPhone,
       companyEmail: offerFormData.companyEmail,
@@ -150,7 +119,7 @@ export default function Home() {
     
     setModalData({
       title: 'Offer Letter Generated!',
-      message: `Offer letter for ${offerFormData.candidateName} has been generated successfully with ${currentLocation.name} location.`,
+      message: `Offer letter for ${offerFormData.candidateName} has been generated successfully.`,
       type: 'offer'
     });
     setShowSuccessModal(true);
@@ -170,7 +139,10 @@ export default function Home() {
       jobTitle: '',
       department: '',
       joiningDate: '',
-      workLocation: 'patna',
+      workLocation: 'Patna, Bihar',
+      workAddress: '1st Floor, Siyaram Mansion, Opp. Telephone Exchange, Near P&M Mall, Khurji, Patna, Bihar – 800010',
+      pincode: '800010',
+      gstin: '10AAJCV6337M1Z2',
       reportingManager: '',
       ctc: '',
       probationPeriod: '3 Months',
@@ -185,8 +157,6 @@ export default function Home() {
       offerDate: new Date().toISOString().split('T')[0]
     });
   };
-
-  const currentLocation = getCurrentLocationDetails();
 
   return (
     <>
@@ -301,28 +271,6 @@ export default function Home() {
                   <input type="date" name="joiningDate" value={offerFormData.joiningDate} onChange={handleOfferChange} className="w-full px-4 py-2.5 border rounded-lg" />
                 </div>
                 
-                {/* Work Location Dropdown - Updated with 5 locations */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Work Location *</label>
-                  <select 
-                    name="workLocation" 
-                    value={offerFormData.workLocation} 
-                    onChange={handleOfferChange}
-                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="patna">Patna, Bihar</option>
-                    <option value="purnea">Purnea, Bihar</option>
-                    <option value="noida">Noida, Uttar Pradesh</option>
-                    <option value="falka">Falka, Katihar</option>
-                    <option value="katihar">Katihar, Bihar</option>
-                  </select>
-                  {currentLocation && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      GST: {currentLocation.gstin} | {currentLocation.address.substring(0, 50)}...
-                    </p>
-                  )}
-                </div>
-                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Reporting Manager</label>
                   <input type="text" name="reportingManager" value={offerFormData.reportingManager} onChange={handleOfferChange} placeholder="Manager name" className="w-full px-4 py-2.5 border rounded-lg" />
@@ -332,7 +280,6 @@ export default function Home() {
                   <input type="text" name="ctc" value={offerFormData.ctc} onChange={handleOfferChange} placeholder="e.g., 12,00,000" className="w-full px-4 py-2.5 border rounded-lg" />
                 </div>
                 
-                {/* ✅ MANUAL INPUT FIELDS - Working Hours, Working Days, Notice Period, Probation */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Probation Period</label>
                   <input 
@@ -343,7 +290,6 @@ export default function Home() {
                     placeholder="e.g., 3 Months"
                     className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   />
-                  <p className="text-xs text-gray-400 mt-1">Enter probation period (e.g., 3 Months, 6 Months)</p>
                 </div>
                 
                 <div>
@@ -356,7 +302,6 @@ export default function Home() {
                     placeholder="e.g., 1 Month"
                     className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   />
-                  <p className="text-xs text-gray-400 mt-1">Enter notice period (e.g., 15 Days, 1 Month, 2 Months)</p>
                 </div>
                 
                 <div>
@@ -369,7 +314,6 @@ export default function Home() {
                     placeholder="e.g., 10:00 AM - 07:00 PM"
                     className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   />
-                  <p className="text-xs text-gray-400 mt-1">Enter working hours (e.g., 09:00 AM - 06:00 PM)</p>
                 </div>
                 
                 <div>
@@ -382,7 +326,65 @@ export default function Home() {
                     placeholder="e.g., Monday to Friday"
                     className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   />
-                  <p className="text-xs text-gray-400 mt-1">Enter working days (e.g., Monday to Friday, Tuesday to Sunday)</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Location Details Section - FULLY MANUAL */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <MapPinned className="h-5 w-5 mr-2 text-green-600" />
+                Location Details (Manual Entry)
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Work Location *</label>
+                  <input 
+                    type="text" 
+                    name="workLocation" 
+                    value={offerFormData.workLocation} 
+                    onChange={handleOfferChange} 
+                    placeholder="e.g., Patna, Bihar"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Enter city and state (e.g., Patna, Bihar)</p>
+                </div>
+                
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Office Address *</label>
+                  <textarea 
+                    name="workAddress" 
+                    value={offerFormData.workAddress} 
+                    onChange={handleOfferChange} 
+                    rows={2}
+                    placeholder="Enter complete office address"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Pincode *</label>
+                  <input 
+                    type="text" 
+                    name="pincode" 
+                    value={offerFormData.pincode} 
+                    onChange={handleOfferChange} 
+                    placeholder="e.g., 800010"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">GSTIN *</label>
+                  <input 
+                    type="text" 
+                    name="gstin" 
+                    value={offerFormData.gstin} 
+                    onChange={handleOfferChange} 
+                    placeholder="e.g., 10AAJCV6337M1Z2"
+                    className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Enter GSTIN number manually</p>
                 </div>
               </div>
             </div>
@@ -407,16 +409,6 @@ export default function Home() {
                   <input type="email" name="companyEmail" value={offerFormData.companyEmail} onChange={handleOfferChange} className="w-full px-4 py-2.5 border rounded-lg" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">GSTIN (Auto-updates with Location)</label>
-                  <input 
-                    type="text" 
-                    value={currentLocation.gstin} 
-                    disabled 
-                    className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-gray-600"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">GST is automatically set based on selected location</p>
-                </div>
-                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">HR Name</label>
                   <input type="text" name="hrName" value={offerFormData.hrName} onChange={handleOfferChange} className="w-full px-4 py-2.5 border rounded-lg" />
                 </div>
@@ -427,59 +419,6 @@ export default function Home() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Offer Date</label>
                   <input type="date" name="offerDate" value={offerFormData.offerDate} onChange={handleOfferChange} className="w-full px-4 py-2.5 border rounded-lg" />
-                </div>
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Company Address (Auto-updates with Location)</label>
-                <textarea 
-                  value={currentLocation.address} 
-                  disabled 
-                  rows={2} 
-                  className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-gray-600"
-                />
-                <p className="text-xs text-gray-500 mt-1">Address is automatically set based on selected location</p>
-              </div>
-            </div>
-
-            {/* Digital Signature Section - Updated with location */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <Fingerprint className="h-5 w-5 mr-2 text-indigo-600" />
-                Digital Signature (HR) - {currentLocation.name}
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">HR Signature</label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-400 transition-colors">
-                    <div className="space-y-1 text-center">
-                      <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <div className="flex text-sm text-gray-600">
-                        <label htmlFor="signature-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                          <span>Upload a file</span>
-                          <input id="signature-upload" name="signature-upload" type="file" className="sr-only" accept="image/*" />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
-                      </div>
-                      <p className="text-xs text-gray-500">PNG, JPG up to 2MB</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Signature will appear with location: <strong>{currentLocation.name}</strong>
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Signature Preview</label>
-                  <div className="border rounded-lg p-4 h-32 flex flex-col items-center justify-center bg-gray-50">
-                    <p className="text-gray-400 text-sm">No signature uploaded yet</p>
-                    <div className="mt-2 text-xs text-gray-500">
-                      <span className="block">📍 {currentLocation.name}</span>
-                      <span className="block text-indigo-600 font-semibold">{offerFormData.hrName || 'Apurwa Kumari'}</span>
-                      <span className="block text-xs">{offerFormData.hrDesignation || 'HR Manager'}</span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">Digital signature will appear on the offer letter</p>
                 </div>
               </div>
             </div>
@@ -501,7 +440,15 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-600">Location</p>
-                  <p className="font-semibold text-purple-600">{currentLocation.name}</p>
+                  <p className="font-semibold text-purple-600 truncate text-sm">{offerFormData.workLocation || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600">Pincode</p>
+                  <p className="font-semibold text-indigo-600">{offerFormData.pincode || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600">GSTIN</p>
+                  <p className="font-semibold text-orange-600 text-xs">{offerFormData.gstin || '—'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-600">Working Hours</p>
@@ -510,14 +457,6 @@ export default function Home() {
                 <div>
                   <p className="text-xs text-gray-600">Working Days</p>
                   <p className="font-semibold text-indigo-600 text-sm">{offerFormData.workingDays}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-600">Notice Period</p>
-                  <p className="font-semibold text-orange-600 text-sm">{offerFormData.noticePeriod}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-600">Probation</p>
-                  <p className="font-semibold text-orange-600 text-sm">{offerFormData.probationPeriod}</p>
                 </div>
               </div>
             </div>
@@ -535,7 +474,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Features Section - Updated with 5 locations */}
+          {/* Features Section */}
           <div className="w-full max-w-4xl mt-16">
             <div className="text-center mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Features</h2>
@@ -549,8 +488,8 @@ export default function Home() {
               </div>
               <div className="bg-white rounded-xl p-6 text-center border border-gray-200">
                 <div className="inline-flex p-3 bg-green-100 rounded-xl mb-4"><Building className="h-6 w-6 text-green-600" /></div>
-                <h3 className="font-semibold mb-2">Multi-Location Support</h3>
-                <p className="text-sm text-gray-500">Patna, Purnea, Noida, Falka & Katihar with dynamic GST</p>
+                <h3 className="font-semibold mb-2">Manual Location Entry</h3>
+                <p className="text-sm text-gray-500">Enter location, address, pincode & GSTIN manually</p>
               </div>
               <div className="bg-white rounded-xl p-6 text-center border border-gray-200">
                 <div className="inline-flex p-3 bg-purple-100 rounded-xl mb-4"><Download className="h-6 w-6 text-purple-600" /></div>

@@ -5,54 +5,26 @@ export const generatePDF = async (formData) => {
 
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
-  const margin = 15;
+  const margin = 12;
   const maxWidth = pageWidth - margin * 2;
 
-  // Location & GST Configuration
-  const locationConfig = {
-    patna: {
-      name: 'Patna',
-      gstin: '10AAMCK7097E1ZG',
-      address:
-        '1st Floor, Siyaram Mansion, Opp. Telephone Exchange, Near P&M Mall, Khurji, Patna, Bihar – 800010',
-    },
-    purnea: {
-      name: 'Purnea',
-      gstin: '10AAMCK7097E1ZG',
-      address:
-        'First Floor, Shakuntala Sagar, Ct Station Rd, PWD Colony, Purnia, Bihar 854301',
-    },
-    noida: {
-      name: 'Noida',
-      gstin: '10AAMCK7097E1ZG',
-      address:
-        'G 94 (Basement), G Block, Sector 63, Noida, Chotpur, Uttar Pradesh 201301',
-    },
-    falka: {
-      name: 'Falka, Katihar',
-      gstin: '10AAMCK7097E1ZG',
-      address:
-        'Falka, Katihar District, Bihar - 854105',
-    },
-    katihar: {
-      name: 'Katihar',
-      gstin: '10AAMCK7097E1ZG',
-      address:
-        'Katihar, Bihar - 854105',
-    },
+  // ========== DIRECT FORM DATA SE LO - FULLY MANUAL ==========
+  const location = {
+    name: formData.workLocation || 'Patna, Bihar',
+    address: formData.workAddress || '1st Floor, Siyaram Mansion, Opp. Telephone Exchange, Near P&M Mall, Khurji, Patna, Bihar – 800010',
+    gstin: formData.gstin || '10AAJCV6337M1Z2',
+    pincode: formData.pincode || '800010',
   };
+  // ==========================================================
 
-  const selectedLocation = formData.workLocation?.toLowerCase() || 'patna';
-  const location = locationConfig[selectedLocation] || locationConfig.patna;
-
-  // ========== MANUAL INPUTS - YAHAN SE SET KAREIN ==========
+  // ========== MANUAL INPUTS ==========
   const manualSettings = {
-    workingHours: formData.workingHours || '10:00 AM - 07:00 PM',  // Manual se set karein
-    workingDays: formData.workingDays || 'Tuesday to Sunday',      // Manual se set karein
-    noticePeriod: formData.noticePeriod || '1 Month',              // Manual se set karein
-    probationPeriod: formData.probationPeriod || '3 Months',       // Manual se set karein
+    workingHours: formData.workingHours || '10:00 AM - 07:00 PM',
+    workingDays: formData.workingDays || 'Tuesday to Sunday',
+    noticePeriod: formData.noticePeriod || '1 Month',
+    probationPeriod: formData.probationPeriod || '3 Months',
   };
-  // ========================================================
+  // ==================================
 
   const colors = {
     primary: [26, 35, 126],
@@ -84,194 +56,185 @@ export const generatePDF = async (formData) => {
 
   const addHeader = () => {
     doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.rect(0, 0, pageWidth, 52, 'F');
+    doc.rect(0, 0, pageWidth, 38, 'F');
 
     doc.setFillColor(colors.accent[0], colors.accent[1], colors.accent[2]);
-    doc.rect(0, 52, pageWidth, 2, 'F');
+    doc.rect(0, 38, pageWidth, 2, 'F');
 
     if (logoImage) {
       doc.setFillColor(255, 255, 255, 0.15);
-      doc.roundedRect(margin - 2, 10, 32, 32, 3, 3, 'F');
-      doc.addImage(logoImage, 'PNG', margin, 12, 28, 28);
+      doc.roundedRect(margin - 2, 6, 24, 24, 3, 3, 'F');
+      doc.addImage(logoImage, 'PNG', margin, 8, 20, 20);
     }
 
-    const infoX = margin + 35;
-    doc.setFontSize(16);
+    const infoX = margin + 28;
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(255, 255, 255);
-    doc.text('COACHINGYAARI PRIVATE LIMITED', infoX, 20);
+    doc.text('COACHINGYAARI PRIVATE LIMITED', infoX, 14);
 
-    doc.setFontSize(8);
+    doc.setFontSize(6);
     doc.setFont('helvetica', 'normal');
     const addressLines = doc.splitTextToSize(location.address, pageWidth - infoX - margin);
-    doc.text(addressLines, infoX, 28);
+    doc.text(addressLines, infoX, 20);
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    const contactY = 28 + addressLines.length * 4 + 2;
-    doc.text('PH: +91 8084720333  |  WEB: www.coachingyaari.com', infoX, contactY);
+    doc.setFontSize(6);
+    const contactY = 20 + addressLines.length * 3 + 1;
+    doc.text('PH: +91 9973725719  |  WEB: www.coachingyaari.com', infoX, contactY);
     doc.setFont('helvetica', 'normal');
-    doc.text(`GSTIN: ${location.gstin}  |  EMAIL: coachingyaari@gmail.com`, infoX, contactY + 7);
+    doc.text(`GSTIN: ${location.gstin}  |  EMAIL: coachingyaari@gmail.com`, infoX, contactY + 4);
 
-    return 70;
+    return 52;
   };
 
   doc.setDrawColor(colors.border[0], colors.border[1], colors.border[2]);
-  doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+  doc.rect(4, 4, pageWidth - 8, pageHeight - 8);
 
   let yPosition = addHeader();
 
-  doc.setFontSize(22);
+  doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(colors.primary[0], colors.primary[1], colors.primary[2]);
   doc.text('OFFER LETTER', pageWidth / 2, yPosition, { align: 'center' });
-  yPosition += 18;
-
-  doc.setFontSize(9);
-  doc.setTextColor(colors.textDark[0], colors.textDark[1], colors.textDark[2]);
-  doc.text(`REF: OFF/CY/${new Date().getFullYear()}/${formData.name.substring(0, 3).toUpperCase()}`, margin, yPosition);
-  doc.text(`DATE: ${new Date().toLocaleDateString('en-GB')}`, pageWidth - margin - 40, yPosition);
   yPosition += 12;
 
-  doc.setFillColor(colors.lightBg[0], colors.lightBg[1], colors.lightBg[2]);
-  doc.roundedRect(margin, yPosition, maxWidth, 30, 2, 2, 'F');
-  doc.setTextColor(colors.secondary[0], colors.secondary[1], colors.secondary[2]);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'bold');
-  doc.text('TO,', margin + 5, yPosition + 7);
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7);
   doc.setTextColor(colors.textDark[0], colors.textDark[1], colors.textDark[2]);
-  doc.text(formData.name.toUpperCase(), margin + 5, yPosition + 16);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`${formData.designation} | ${formData.department}`, margin + 5, yPosition + 24);
-  yPosition += 42;
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10);
-  doc.text('Subject: Letter of Offer for Employment', margin, yPosition);
-  yPosition += 10;
-  doc.setFont('helvetica', 'normal');
-  doc.text(`Dear ${formData.name},`, margin, yPosition);
+  doc.text(`REF: OFF/CY/${new Date().getFullYear()}/${formData.name?.substring(0, 3).toUpperCase() || 'XXX'}`, margin, yPosition);
+  doc.text(`DATE: ${new Date().toLocaleDateString('en-GB')}`, pageWidth - margin - 40, yPosition);
   yPosition += 8;
 
-  // ✅ YAHAN FIX KARO - "COACHING YAARI" ko "COACHINGYAARI" karo
+  doc.setFillColor(colors.lightBg[0], colors.lightBg[1], colors.lightBg[2]);
+  doc.roundedRect(margin, yPosition, maxWidth, 20, 2, 2, 'F');
+  doc.setTextColor(colors.secondary[0], colors.secondary[1], colors.secondary[2]);
+  doc.setFontSize(7);
+  doc.setFont('helvetica', 'bold');
+  doc.text('TO,', margin + 4, yPosition + 5);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(colors.textDark[0], colors.textDark[1], colors.textDark[2]);
+  doc.text(formData.name?.toUpperCase() || 'CANDIDATE', margin + 4, yPosition + 11);
+  doc.setFontSize(7);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`${formData.designation || ''} | ${formData.department || ''}`, margin + 4, yPosition + 17);
+  yPosition += 26;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.text('Subject: Letter of Offer for Employment', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Dear ${formData.name || 'Candidate'},`, margin, yPosition);
+  yPosition += 5;
+
   const intro = `Following our recent discussions, we are pleased to offer you a full-time position at COACHINGYAARI PRIVATE LIMITED. We are confident that your expertise will be a significant asset to our educational excellence and organizational growth.`;
   const splitIntro = doc.splitTextToSize(intro, maxWidth);
   doc.text(splitIntro, margin, yPosition);
-  yPosition += splitIntro.length * 5.5 + 10;
+  yPosition += splitIntro.length * 4 + 5;
 
   doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-  doc.rect(margin, yPosition, maxWidth, 8, 'F');
+  doc.rect(margin, yPosition, maxWidth, 5, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10);
-  doc.text('REMUNERATION & KEY TERMS', margin + 5, yPosition + 5.5);
-  yPosition += 15;
+  doc.setFontSize(8);
+  doc.text('REMUNERATION & KEY TERMS', margin + 4, yPosition + 4);
+  yPosition += 10;
 
-  // ========== TERMS - AB MANUAL SETTINGS USE KARENGE ==========
+  // ========== TERMS - 2 COLUMNS ==========
   const terms = [
-    {
-      label: 'Date of Joining',
-      value: formData.joiningDate,
-    },
-    {
-      label: 'Annual CTC',
-      value: `Rs. ${formData.ctc} /-`,
-    },
-    {
-      label: 'Designation',
-      value: formData.designation,
-    },
-    {
-      label: 'Work Location',
-      value: `${location.name} - ${location.address}`,
-    },
-    {
-      label: 'Probation',
-      value: manualSettings.probationPeriod,  // Manual se set
-    },
-    {
-      label: 'Notice Period',
-      value: manualSettings.noticePeriod,      // Manual se set
-    },
-    {
-      label: 'Working Hours',
-      value: manualSettings.workingHours,      // Manual se set
-    },
-    {
-      label: 'Working Days',
-      value: manualSettings.workingDays,       // Manual se set
-    },
+    { label: 'Date of Joining', value: formData.joiningDate || 'Not Specified' },
+    { label: 'Annual CTC', value: `Rs. ${formData.ctc || '0'} /-` },
+    { label: 'Designation', value: formData.designation || 'Not Specified' },
+    { label: 'Work Location', value: location.name },
+    { label: 'Address', value: location.address },
+    { label: 'Pincode', value: location.pincode },
+    { label: 'GSTIN', value: location.gstin },
+    { label: 'Probation Period', value: manualSettings.probationPeriod },
+    { label: 'Notice Period', value: manualSettings.noticePeriod },
+    { label: 'Working Hours', value: manualSettings.workingHours },
+    { label: 'Working Days', value: manualSettings.workingDays },
   ];
 
   doc.setTextColor(colors.textDark[0], colors.textDark[1], colors.textDark[2]);
-  doc.setFontSize(9);
+  doc.setFontSize(7);
 
-  let extraHeight = 0;
+  let addressLines = [];
+  let addressExtraHeight = 0;
+  terms.forEach((term) => {
+    if (term.label === 'Address') {
+      addressLines = doc.splitTextToSize(term.value, 50);
+      addressExtraHeight = Math.max(addressExtraHeight, (addressLines.length - 1) * 3.5);
+    }
+  });
+
+  const rowHeight = 8 + addressExtraHeight;
+
   terms.forEach((term, i) => {
     const col = i % 2;
     const row = Math.floor(i / 2);
     const x = margin + col * (maxWidth / 2);
-    const y = yPosition + row * 12;
+    const y = yPosition + row * rowHeight;
 
     doc.setFont('helvetica', 'bold');
     doc.text(`${term.label}:`, x, y);
     doc.setFont('helvetica', 'normal');
 
     let valueLines = [];
-    if (term.label === 'Work Location') {
-      valueLines = doc.splitTextToSize(term.value, 55);
-      extraHeight = Math.max(extraHeight, (valueLines.length - 1) * 5);
+    if (term.label === 'Address') {
+      valueLines = doc.splitTextToSize(term.value, 50);
     } else {
       valueLines = [term.value];
     }
-    doc.text(valueLines, x + 32, y);
+    doc.text(valueLines, x + 30, y);
   });
 
-  yPosition += 50 + extraHeight;
+  const totalRows = Math.ceil(terms.length / 2);
+  yPosition += totalRows * rowHeight + 6;
 
+  // ========== SIGNATURE SECTION ==========
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10);
+  doc.setFontSize(8);
   doc.text('For COACHINGYAARI PRIVATE LIMITED', margin, yPosition);
 
   if (hrSignature) {
-    doc.addImage(hrSignature, 'PNG', margin + 5, yPosition + 2, 50, 20);
+    doc.addImage(hrSignature, 'PNG', margin + 4, yPosition + 2, 40, 16);
   }
-  yPosition += 28;
+  yPosition += 20;
 
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.text('Apurwa Kumari ', margin, yPosition);
   doc.setFontSize(9);
+  doc.text('Apurwa Kumari', margin, yPosition);
+  doc.setFontSize(7);
   doc.setFont('helvetica', 'normal');
-  doc.text('HR Manager - Human Resources Department', margin, yPosition + 5);
-  doc.setFontSize(8);
+  doc.text('HR Manager - Human Resources Department', margin, yPosition + 4);
+  doc.setFontSize(6);
   doc.setTextColor(100, 100, 100);
-  doc.text('(Digitally Authorized Signature)', margin, yPosition + 10);
+  doc.text('(Digitally Authorized Signature)', margin, yPosition + 8);
 
-  yPosition += 24;
+  yPosition += 16;
 
+  // ========== DECLARATION SECTION ==========
   doc.setFillColor(250, 250, 250);
-  doc.rect(margin, yPosition, maxWidth, 32, 'F');
+  doc.rect(margin, yPosition, maxWidth, 24, 'F');
   doc.setDrawColor(colors.border[0], colors.border[1], colors.border[2]);
-  doc.rect(margin, yPosition, maxWidth, 32, 'S');
-  doc.setFontSize(9);
+  doc.rect(margin, yPosition, maxWidth, 24, 'S');
+  doc.setFontSize(7);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(colors.textDark[0], colors.textDark[1], colors.textDark[2]);
-  doc.text('DECLARATION & ACCEPTANCE', margin + 5, yPosition + 8);
+  doc.text('DECLARATION & ACCEPTANCE', margin + 4, yPosition + 5);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.text('I accept the above offer and agree to the terms and conditions.', margin + 5, yPosition + 16);
-  doc.line(margin + 5, yPosition + 25, margin + 65, yPosition + 25);
-  doc.text('Candidate Signature & Date', margin + 5, yPosition + 29);
+  doc.setFontSize(6);
+  doc.text('I accept the above offer and agree to the terms and conditions.', margin + 4, yPosition + 11);
+  doc.line(margin + 4, yPosition + 17, margin + 50, yPosition + 17);
+  doc.text('Candidate Signature & Date', margin + 4, yPosition + 21);
 
-  doc.setFontSize(7);
+  // ========== FOOTER ==========
+  doc.setFontSize(5);
   doc.setTextColor(150, 150, 150);
-  doc.text('COACHINGYAARI PRIVATE LIMITED | Confidential Document', pageWidth / 2, pageHeight - 12, {
+  doc.text('COACHINGYAARI PRIVATE LIMITED | Confidential Document', pageWidth / 2, pageHeight - 8, {
     align: 'center',
   });
 
-  doc.save(`Offer_Letter_${formData.name.replace(/\s+/g, '_')}_${location.name}.pdf`);
+  doc.save(`Offer_Letter_${(formData.name || 'Candidate').replace(/\s+/g, '_')}.pdf`);
 };
