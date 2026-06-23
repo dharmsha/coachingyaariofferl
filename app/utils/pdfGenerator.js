@@ -156,7 +156,8 @@ export const generatePDF = async (formData) => {
   doc.text(`Dear ${formData.name},`, margin, yPosition);
   yPosition += 8;
 
-  const intro = `Following our recent discussions, we are pleased to offer you a full-time position at COACHING YAARI PRIVATE LIMITED. We are confident that your expertise will be a significant asset to our educational excellence and organizational growth.`;
+  // ✅ YAHAN FIX KARO - "COACHING YAARI" ko "COACHINGYAARI" karo
+  const intro = `Following our recent discussions, we are pleased to offer you a full-time position at COACHINGYAARI PRIVATE LIMITED. We are confident that your expertise will be a significant asset to our educational excellence and organizational growth.`;
   const splitIntro = doc.splitTextToSize(intro, maxWidth);
   doc.text(splitIntro, margin, yPosition);
   yPosition += splitIntro.length * 5.5 + 10;
